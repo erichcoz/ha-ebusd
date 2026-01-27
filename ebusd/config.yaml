@@ -1,6 +1,6 @@
 name: "eBUSd Custom"
 version: "1.0.0"
-slug: "ebusd_custom"
+slug: "ebusd"
 description: "Custom eBUSd Add-on with local CSV configuration"
 startup: services
 boot: auto
