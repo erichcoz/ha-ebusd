@@ -2,6 +2,15 @@ name: "eBUSd Custom"
 version: "1.0.0"
 slug: "ebusd"
 description: "Custom eBUSd Add-on with local CSV configuration"
+
+arch:
+  - aarch64
+  - armv7
+  - amd64
+  - i386
+
+
+
 startup: services
 boot: auto
 
