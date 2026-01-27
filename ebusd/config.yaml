@@ -22,4 +22,3 @@ map:
 ports:
   8888/tcp: 8888
 
-image: "local/ebusd"
