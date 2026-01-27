@@ -1,0 +1,23 @@
+[main]
+id = vaillant_bai
+name = Vaillant BAI Minimal
+version = 1.0
+comment = Minimal BAI for atmoTEC exclusiv (HC1 + DHW)
+
+[command]
+# Brennerstatus, Modulation, Wasserdruck, Solltemperaturen
+b511 = 
+  { "Status01", "UCH", "heating_status", "", "" },
+  { "Modulation", "UCH", "modulation", "", "" },
+  { "WaterPressure", "D2.1", "water_pressure", "bar", "" },
+  { "Hc1SetTemp", "UCH", "hc1_set_temp", "°C", "" },
+  { "DhwsSetTemp", "UCH", "dhw_set_temp", "°C", "" }
+
+# Vorlauf + Rücklauf
+b510 =
+  { "FlowTemp", "D2.1", "flow_temp", "°C", "" },
+  { "ReturnTemp", "D2.1", "return_temp", "°C", "" }
+
+# Brennerstatus (einfach)
+b504 =
+  { "BurnerOn", "bool", "burner_on", "", "" }
