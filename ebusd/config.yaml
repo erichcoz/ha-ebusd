@@ -1,32 +1,25 @@
-name: "eBUSd Custom"
+name: "eBUSd"
 version: "1.0.0"
-image: "local/ebusd"
-build_from:
-  aarch64: "ghcr.io/home-assistant/aarch64-base:latest"
-  armv7: "ghcr.io/home-assistant/armv7-base:latest"
-  amd64: "ghcr.io/home-assistant/amd64-base:latest"
-  i386: "ghcr.io/home-assistant/i386-base:latest"
-
 slug: "ebusd"
-description: "Custom eBUSd Add-on with local CSV configuration"
-
+description: "eBUSd daemon for Vaillant / atmoTEC exclusiv"
 arch:
   - aarch64
   - armv7
   - amd64
-  - i386
-
-
-
 startup: services
 boot: auto
+host_network: true
 
-ports:
-  8888/tcp: 8888
-  9999/tcp: 9999
+options: {}
+schema: {}
+
+devices:
+  - "/dev/ttyUSB0:/dev/ttyUSB0"
 
 map:
   - config:rw
 
-options: {}
-schema: {}
+ports:
+  8888/tcp: 8888
+
+image: "local/ebusd"
