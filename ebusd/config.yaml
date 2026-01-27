@@ -1,5 +1,6 @@
 name: "eBUSd Custom"
 version: "1.0.0"
+image: "local/ebusd"
 slug: "ebusd"
 description: "Custom eBUSd Add-on with local CSV configuration"
 
