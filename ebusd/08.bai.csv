@@ -1,0 +1,40 @@
+[FlowTemp]
+command = bai FlowTemp
+type = temp
+unit = °C
+
+[ReturnTemp]
+command = bai ReturnTemp
+type = temp
+unit = °C
+
+[BurnerPower]
+command = bai BurnerPower
+type = percent
+unit = %
+
+[BurnerOn]
+command = bai BurnerOn
+type = bool
+
+[PumpOn]
+command = bai PumpOn
+type = bool
+
+[Modulation]
+command = bai Modulation
+type = percent
+unit = %
+
+[OutsideTemp]
+command = bai OutsideTemp
+type = temp
+unit = °C
+
+[HeatingStatus]
+command = bai HeatingStatus
+type = enum
+
+[ErrorCode]
+command = bai ErrorCode
+type = int
