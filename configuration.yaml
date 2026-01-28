@@ -23,41 +23,50 @@ mqtt:
       unit_of_measurement: "%"
       value_template: "{{ value_json.humidity }}"
       device_class: humidity
-      
-    - name: "Vorlauf"
-      state_topic: "ebusd/vaillant_bai/flow_temp"
-      unit_of_measurement: "°C"
-      device_class: temperature
+  sensor:
+  - platform: command_line
+    name: "Heizung Vorlauf Soll"
+    command: "ebusctl read Status01 | cut -d';' -f1"
+    unit_of_measurement: "°C"
 
-    - name: "Rücklauf"
-      state_topic: "ebusd/vaillant_bai/return_temp"
-      unit_of_measurement: "°C"
-      device_class: temperature
+  - platform: command_line
+    name: "Heizung Vorlauf Ist"
+    command: "ebusctl read Status01 | cut -d';' -f2"
+    unit_of_measurement: "°C"
 
-    - name: "Wasserdruck"
-      state_topic: "ebusd/vaillant_bai/water_pressure"
-      unit_of_measurement: "bar"
-      device_class: pressure
+  - platform: command_line
+    name: "Warmwasser Soll"
+    command: "ebusctl read Status01 | cut -d';' -f4"
+    unit_of_measurement: "°C"
 
-    - name: "Modulation"
-      state_topic: "ebusd/vaillant_bai/modulation"
-      unit_of_measurement: "%"
-      device_class: power_factor
+  - platform: command_line
+    name: "Warmwasser Ist"
+    command: "ebusctl read Status01 | cut -d';' -f5"
+    unit_of_measurement: "°C"
 
-    - name: "Heizkreis Solltemperatur"
-      state_topic: "ebusd/vaillant_bai/hc1_set_temp"
-      unit_of_measurement: "°C"
-      device_class: temperature
+  - platform: command_line
+    name: "Brennerstatus"
+    command: "ebusctl read Status01 | cut -d';' -f6"
 
-    - name: "Warmwasser Solltemperatur"
-      state_topic: "ebusd/vaillant_bai/dhw_set_temp"
-      unit_of_measurement: "°C"
-      device_class: temperature
+  - platform: command_line
+    name: "Heizmodus"
+    command: "ebusctl read Status02 | cut -d';' -f1"
 
-  binary_sensor:
-    - name: "Brenner aktiv"
-      state_topic: "ebusd/vaillant_bai/burner_on"
-      payload_on: "1"
-      payload_off: "0"
-      device_class: heat
- 
+  - platform: command_line
+    name: "Heizkurve"
+    command: "ebusctl read Status02 | cut -d';' -f2"
+
+  - platform: command_line
+    name: "Heizkurve Solltemperatur"
+    command: "ebusctl read Status02 | cut -d';' -f3"
+    unit_of_measurement: "°C"
+
+  - platform: command_line
+    name: "Heizkurve Max"
+    command: "ebusctl read Status02 | cut -d';' -f4"
+    unit_of_measurement: "°C"
+
+  - platform: command_line
+    name: "Interne Außentemperatur"
+    command: "ebusctl read Status02 | cut -d';' -f5"
+    unit_of_measurement: "°C"
