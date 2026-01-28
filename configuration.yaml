@@ -23,6 +23,7 @@ mqtt:
       unit_of_measurement: "%"
       value_template: "{{ value_json.humidity }}"
       device_class: humidity
+      
 sensor:
   - platform: command_line
     name: "Heizung Vorlauf Soll"
@@ -52,7 +53,6 @@ sensor:
     name: "Heizmodus"
     command: "ebusctl read Status02 | cut -d';' -f1"
 
-sensor:
   - platform: command_line
     name: "Heizkurve"
     command: "ebusctl read Status02 | cut -d';' -f2"
@@ -68,7 +68,4 @@ sensor:
     command: "ebusctl read Status02 | cut -d';' -f4"
     unit_of_measurement: "°C"
 
-  - platform: command_line
-    name: "Interne Außentemperatur"
-    command: "ebusctl read Status02 | cut -d';' -f5"
-    unit_of_measurement: "°C"
+  
