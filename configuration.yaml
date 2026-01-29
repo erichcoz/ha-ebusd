@@ -81,7 +81,9 @@ template:
       - name: "Heizungsdruck berechnet"
         unit_of_measurement: "bar"
         state: >
-          {% set c = states('sensor.waterpressuremeasurecounter') | float(0) %}
+          {% set c = states('sensor.ebusd_bai_waterpressuremeasurecounter') | float(0) %}
           {{ (0.026087 * c - 3.217) | round(2) }}
+
+
 
 
