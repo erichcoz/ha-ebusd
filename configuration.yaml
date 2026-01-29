@@ -1,4 +1,3 @@
-
 # Loads default set of integrations. Do not remove.
 default_config:
 
@@ -17,7 +16,7 @@ mqtt:
       unit_of_measurement: "°C"
       value_template: "{{ value_json.temperature }}"
       device_class: temperature
-      
+
     - name: "ESP32 Humidity"
       state_topic: "homeassistant/sensor/esp32_dht22/state"
       unit_of_measurement: "%"
@@ -72,5 +71,3 @@ sensor:
     command: "/usr/bin/ebusctl read Status02 | cut -d';' -f5"
     unit_of_measurement: "°C"
 
-
-  
