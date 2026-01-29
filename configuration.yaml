@@ -79,6 +79,7 @@ sensor:
 template:
   - sensor:
       - name: "Heizungsdruck berechnet"
+        unique_id: heizungsdruck_berechnet
         unit_of_measurement: "bar"
         state: >
           {% set c = states('sensor.ebusd_bai_waterpressuremeasurecounter') | float(0) %}
@@ -86,6 +87,7 @@ template:
 template:
   - sensor:
       - name: "Heizungsdruck Counter"
+        unique_id: heizungsdruck_counter
         unit_of_measurement: "count"
         state: >
           {{ states('sensor.ebusd_bai_waterpressuremeasurecounter') }}
