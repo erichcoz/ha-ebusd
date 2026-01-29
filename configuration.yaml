@@ -71,13 +71,3 @@ sensor:
     command: "/usr/bin/ebusctl read Status02 | cut -d';' -f5"
     unit_of_measurement: "°C"
 
-  - platform: command_line
-    name: "Heizung Soll"
-    command: "/usr/bin/ebusctl read Status02 | cut -d';' -f3"
-    unit_of_measurement: "°C"
-    
-  - platform: command_line
-    name: "Warmwasser Soll"
-    command: "/usr/bin/ebusctl read Status01 | cut -d';' -f1"
-    unit_of_measurement: "°C"
-
