@@ -1,0 +1,25 @@
+adapter:
+  device: /dev/serial/by-id/usb-ESERA_GmbH_eBus_Coupler_12001_ALAJN8OJ-if00-port0
+  baudrate: 2400
+
+mqtt:
+  host: 192.168.1.10        # deine HA-IP oder mqtt-broker-IP
+  port: 1883
+  username: ebusd        # bitte anpassen
+  password: ebusd123      # bitte anpassen
+  prefix: homeassistant
+  discovery: false          # Discovery erst später aktivieren
+
+devices:
+  bai:
+    type: vaillant_bai
+    sensors:
+      - flowtemp
+      - returntemp
+      - hwctemp
+      - storagetemp
+      - modulation
+      - burnerstatus
+      - pumpstatus
+      - flowtempdesired
+      - hwctempdesired

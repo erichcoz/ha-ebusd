@@ -25,57 +25,80 @@ mqtt:
 
 sensor:
   - platform: command_line
-    name: "Heizung Vorlauf Soll"
-    command: "/usr/bin/ebusctl read Status01 | cut -d';' -f1"
+    name: "Heizung Vorlauf Ist"
+    command: "/usr/bin/ebusctl read bai FlowTemp | cut -d';' -f1"
     unit_of_measurement: "°C"
 
   - platform: command_line
-    name: "Heizung Vorlauf Ist"
-    command: "/usr/bin/ebusctl read Status01 | cut -d';' -f2"
+    name: "Heizung Rücklauf Ist"
+    command: "/usr/bin/ebusctl read bai ReturnTemp | cut -d';' -f1"
+    unit_of_measurement: "°C"
+
+  - platform: command_line
+    name: "Heizung Vorlauf Soll"
+    command: "/usr/bin/ebusctl read bai FlowTempDesired | cut -d';' -f1"
     unit_of_measurement: "°C"
 
   - platform: command_line
     name: "Warmwasser Soll"
-    command: "/usr/bin/ebusctl read Status01 | cut -d';' -f4"
+    command: "/usr/bin/ebusctl read bai HwcTempMax | cut -d';' -f1"
     unit_of_measurement: "°C"
 
   - platform: command_line
     name: "Warmwasser Ist"
-    command: "/usr/bin/ebusctl read Status01 | cut -d';' -f5"
+    command: "/usr/bin/ebusctl read bai StorageTemp | cut -d';' -f1"
     unit_of_measurement: "°C"
 
   - platform: command_line
     name: "Brennerstatus"
-    command: "/usr/bin/ebusctl read Status01 | cut -d';' -f6"
+    command: "/usr/bin/ebusctl read bai Flame | cut -d';' -f1"
 
   - platform: command_line
     name: "Heizmodus"
-    command: "/usr/bin/ebusctl read Status02 | cut -d';' -f1"
+    command: "/usr/bin/ebusctl read bai HcPumpMode | cut -d';' -f1"
 
   - platform: command_line
-    name: "Heizkurve"
-    command: "/usr/bin/ebusctl read Status02 | cut -d';' -f2"
-
+    name: "Raumtemperatur Regler"
+    command: "/usr/bin/ebusctl read ctlv3 Z1RoomTemp | cut -d';' -f1"
+    unit_of_measurement: "°C"
+  
   - platform: command_line
-    name: "Heizkurve Solltemperatur"
-    command: "/usr/bin/ebusctl read Status02 | cut -d';' -f3"
+    name: "Raumtemperatur Soll"
+    command: "/usr/bin/ebusctl read ctlv3 Z1ActualRoomTempDesired | cut -d';' -f1"
     unit_of_measurement: "°C"
 
   - platform: command_line
-    name: "Heizkurve Max"
-    command: "/usr/bin/ebusctl read Status02 | cut -d';' -f4"
-    unit_of_measurement: "°C"
+    name: "Heizung Pumpe"
+    command: "/usr/bin/ebusctl read bai StatusCirPump | cut -d';' -f1"
 
   - platform: command_line
-    name: "Interne Außentemperatur"
-    command: "/usr/bin/ebusctl read Status02 | cut -d';' -f5"
-    unit_of_measurement: "°C"
+    name: "Gasventil Starts"
+    command: "/usr/bin/ebusctl read bai ValveStarts | cut -d';' -f1"
 
   - platform: command_line
-    name: "Heizung Soll"
-    command: "/usr/bin/ebusctl read Status02 | cut -d';' -f3"
-    unit_of_measurement: "°C"
+    name: "Gasventil Mode"
+    command: "/usr/bin/ebusctl read bai ValveMode | cut -d';' -f1"  
+
+  - platform: command_line
+    name: "Brennerstatus"
+    command: "/usr/bin/ebusctl read bai Status01 | cut -d';' -f6"
     
+  - platform: command_line
+    name: "Tagtemperatur Soll"
+    command: "/usr/bin/ebusctl read ctlv3 Z1DayTemp | cut -d';' -f1"
+    unit_of_measurement: "°C"
+
+  - platform: command_line
+    name: "Absenktemperatur Soll"
+    command: "/usr/bin/ebusctl read ctlv3 Z1HolidayTemp | cut -d';' -f1"
+    unit_of_measurement: "°C"
+
+  - platform: command_line
+    name: "QuickVeto Temperatur"
+    command: "/usr/bin/ebusctl read ctlv3 Z1QuickVetoTemp | cut -d';' -f1"
+    unit_of_measurement: "°C"
+
+
 template:
   - sensor:
       - name: "Heizungsdruck berechnet"
