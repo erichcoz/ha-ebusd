@@ -79,9 +79,10 @@ sensor:
     name: "Gasventil Mode"
     command: "/usr/bin/ebusctl read bai ValveMode | cut -d';' -f1"  
 
-  - platform: command_line
-    name: "Brennerstatus"
-    command: "/usr/bin/ebusctl read bai Status01 | cut -d';' -f6"
+  - platform: command_line 
+    name: "Brennerstatus" 
+    command: "ebusctl read -f bai Status01 | cut -d';' -f6" 
+    scan_interval: 10
     
   - platform: command_line
     name: "Tagtemperatur Soll"
