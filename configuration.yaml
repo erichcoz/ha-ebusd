@@ -88,7 +88,7 @@ template:
         unique_id: heizungsdruck_counter
         unit_of_measurement: "count"
         state: >
-          {{ states('sensor.ebusd_bai_waterpressuremeasurecounter') }}
+          {{ states('sensor.ebusd_bai_waterpressuremeasurecounter') | float(0)}}
 
 
 
