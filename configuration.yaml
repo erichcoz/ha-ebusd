@@ -79,13 +79,6 @@ sensor:
     name: "Gasventil Mode"
     command: "/usr/bin/ebusctl read bai ValveMode | cut -d';' -f1"  
 
-  
-  - platform: rest
-    name: "Brennerstatus"
-    resource: "http://homeassistant:8889/data?device=bai&cmd=Status01"
-    value_template: "{{ value.split(';')[5] }}"
-    scan_interval: 10
-
   - platform: command_line
     name: "Tagtemperatur Soll"
     command: "/usr/bin/ebusctl read ctlv3 Z1DayTemp | cut -d';' -f1"
