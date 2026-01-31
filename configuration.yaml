@@ -103,7 +103,7 @@ sensor:
       {% else %}
          unknown
       {% endif %}
-    unit_of_measurement: "°C" 
+      
     scan_interval: 30
 
     
