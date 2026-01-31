@@ -129,13 +129,20 @@ template:
         device_class: temperature
         state_class: measurement
         state: >
+ 
+      - name: "CTL Zone 1 Raumtemperatur"
+        unique_id: ctl_zone_1_raumtemperatur
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+        state: >
           {% set v = states('sensor.ctl_z1_roomtemp_raw') %}
           {% if v not in ['unknown', '', 'None', 'null'] %}
             {{ v | float }}
           {% else %}
-            unknown
+            none
           {% endif %}
 
-
+        
 
 
