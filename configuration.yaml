@@ -94,17 +94,18 @@ sensor:
     command: "/usr/bin/ebusctl read ctlv3 Z1QuickVetoTemp | cut -d';' -f1"
     unit_of_measurement: "°C"
 
-  - platform: rest 
-    name: "CTL Zone 1 Raumtemperatur" 
-    resource: "http://homeassistant:8889/data?name=Z1RoomTemp" 
+  - platform: rest
+    name: "CTL Z1 RoomTemp Raw"
+    resource: "http://homeassistant:8889/data?name=Z1RoomTemp"
     value_template: >
       {% if value_json.value is defined and value_json.value not in ["", null, "nan"] %}
         {{ value_json.value }}
       {% else %}
-         unknown
+        unknown
       {% endif %}
-      
+
     scan_interval: 30
+
 
     
 
@@ -122,7 +123,15 @@ template:
         state: >
           {{ states('sensor.ebusd_bai_waterpressuremeasurecounter') | float(0)}}
 
-
+      - name: "CTL Zone 1 Raumtemperatur"
+        unit_of_measurement: "°C"
+        state: >
+          {% set v = states('sensor.ctl_z1_roomtemp_raw') %}
+          {% if v not in ['unknown', '', 'None', 'null'] %}
+            {{ v | float }}
+          {% else %}
+            unknown
+          {% endif %}
 
 
 
