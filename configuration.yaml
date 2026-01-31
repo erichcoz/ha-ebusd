@@ -94,20 +94,22 @@ sensor:
     command: "/usr/bin/ebusctl read ctlv3 Z1QuickVetoTemp | cut -d';' -f1"
     unit_of_measurement: "°C"
 
+
   - platform: rest
     name: "CTL Z1 RoomTemp Raw"
-    resource: "http://homeassistant:8889/data?name=Z1RoomTemp"
+    resource: "http://homeassistant:8889/data"
     value_template: >
-      {% if value_json.value is defined and value_json.value not in ["", null, "nan"] %}
-        {{ value_json.value }}
+      {% set root = value_json.get('ctlv3', {}).get('messages', {}).get('Z1RoomTemp', {}) %}
+      {% set v = root.get('fields', {}).get('value', {}).get('value') %}
+      {% if v is not none and v | string | trim != '' %}
+        {{ v }}
       {% else %}
-        unknown
+        0
       {% endif %}
 
     scan_interval: 30
 
 
-    
 
 template:
   - sensor:
@@ -129,20 +131,10 @@ template:
         device_class: temperature
         state_class: measurement
         state: >
- 
-      - name: "CTL Zone 1 Raumtemperatur"
-        unique_id: ctl_zone_1_raumtemperatur
-        unit_of_measurement: "°C"
-        device_class: temperature
-        state_class: measurement
-        state: >
           {% set v = states('sensor.ctl_z1_roomtemp_raw') %}
-           {% if v | float(default=None) is not none %}
+            {% if v is not none and v | string | trim != '' and v | string | lower not in ['unknown', 'none', 'null', 'nan'] %}
             {{ v | float }}
           {% else %}
-            none
+            0
           {% endif %}
-
-        
-
 
