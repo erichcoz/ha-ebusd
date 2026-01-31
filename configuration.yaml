@@ -94,9 +94,16 @@ sensor:
     command: "/usr/bin/ebusctl read ctlv3 Z1QuickVetoTemp | cut -d';' -f1"
     unit_of_measurement: "°C"
 
-  - platform: command_line
-    name: CTL Zone 1 Raumtemperatur
-    command: "docker exec addon_2ad9b828_ebusd ebusctl read z1RoomTemp"
+  - platform: rest 
+    name: "CTL Zone 1 Raumtemperatur" 
+    resource: "http://homeassistant:8889/data?name=Z1RoomTemp" 
+    value_template: >
+      {% if value_json.value is defined and value_json.value not in ["", null, "nan"] %}
+        {{ value_json.value }}
+      {% else %}
+         unknown
+      {% endif %}
+    unit_of_measurement: "°C" 
     scan_interval: 30
 
     
