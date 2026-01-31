@@ -94,6 +94,12 @@ sensor:
     command: "/usr/bin/ebusctl read ctlv3 Z1QuickVetoTemp | cut -d';' -f1"
     unit_of_measurement: "°C"
 
+  - platform: command_line
+    name: CTL Zone 1 Raumtemperatur
+    command: "docker exec addon_2ad9b828_ebusd ebusctl read z1RoomTemp"
+    scan_interval: 30
+
+    
 
 template:
   - sensor:
