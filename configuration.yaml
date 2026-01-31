@@ -124,6 +124,7 @@ template:
           {{ states('sensor.ebusd_bai_waterpressuremeasurecounter') | float(0)}}
 
       - name: "CTL Zone 1 Raumtemperatur"
+        unique_id: ctl_zone_1_raumtemperatur
         unit_of_measurement: "°C"
         state: >
           {% set v = states('sensor.ctl_z1_roomtemp_raw') %}
