@@ -137,7 +137,7 @@ template:
         state_class: measurement
         state: >
           {% set v = states('sensor.ctl_z1_roomtemp_raw') %}
-                {% if v | float(default=none) is not none %}
+           {% if v | float(default=None) is not none %}
             {{ v | float }}
           {% else %}
             none
