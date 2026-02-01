@@ -23,29 +23,23 @@ mqtt:
       value_template: "{{ value_json.humidity }}"
       device_class: humidity
 
+
 sensor:
+  - platform: rest
+    name: "ctlv3_data"
+    unique_id: "ctlv3_data_all"
+    resource: "http://homeassistant:8889/data"
+    value_template: "OK"
+    json_attributes_path: "$.ctlv3.messages"
+    json_attributes:
+      - Z1RoomTemp
+      - Z1ActualRoomTempDesired
+      - Z1DayTemp
+      - Z1HolidayTemp
+      - Z1QuickVetoTemp
+    scan_interval: 30
 
-
-- platform: rest
-  name: "ctlv3_data"
-  unique_id: "ctlv3_data_all"
-  resource: "http://homeassistant:8889/data"
-  value_template: "OK"
-  json_attributes_path: "$.ctlv3.messages"
-  json_attributes:
-    - Z1RoomTemp
-    - Z1ActualRoomTempDesired
-    - Z1DayTemp
-    - Z1HolidayTemp
-    - Z1QuickVetoTemp
-    # hier kannst du beliebig viele hinzufügen
-  scan_interval: 30
-
-
-
-
-
-
+ 
   - platform: rest
     name: "CTL Z1 RoomTemp Raw"
     unique_id: "ctl_z1_roomtemp_raw_001"
@@ -71,11 +65,12 @@ template:
         state: >
           {% set c = states('sensor.ebusd_bai_waterpressuremeasurecounter') | float(0) %}
           {{ (0.026087 * c - 3.217) | round(2) }}
+
       - name: "Heizungsdruck Counter"
         unique_id: heizungsdruck_counter
         unit_of_measurement: "count"
         state: >
-          {{ states('sensor.ebusd_bai_waterpressuremeasurecounter') | float(0)}}
+          {{ states('sensor.ebusd_bai_waterpressuremeasurecounter') | float(0) }}
 
       - name: "CTL Zone 1 Raumtemperatur"
         unique_id: ctl_zone_1_raumtemperatur
@@ -84,23 +79,10 @@ template:
         state_class: measurement
         state: >
           {% set v = states('sensor.ctl_z1_roomtemp_raw') %}
-            {% if v is not none and v | string | trim != '' and v | string | lower not in ['unknown', 'none', 'null', 'nan'] %}
+          {% if v is not none and v | string | trim != '' and v | string | lower not in ['unknown', 'none', 'null', 'nan'] %}
             {{ v | float }}
           {% else %}
             0
           {% endif %}
 
-
-      - name: "CTL Solltemperatur"
-        uid: "ctl_z1actualdesired"
-        unit: "°C"
-        device: "temperature"
-        feld: "Z1ActualRoomTempDesired"
-
-
-      - name: "CTL Tagtemperatur"
-        uid: "ctl_z1daytemp"
-        unit: "°C"
-        device: "temperature"
-        feld: "Z1DayTemp"
-
+          
