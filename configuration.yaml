@@ -24,40 +24,31 @@ mqtt:
       device_class: humidity
 
 sensor:
-  
-  
 
-  
-  - platform: command_line
-    name: "Raumtemperatur Regler"
-    command: "/usr/bin/ebusctl read ctlv3 Z1RoomTemp | cut -d';' -f1"
-    unit_of_measurement: "°C"
-  
-  - platform: command_line
-    name: "Raumtemperatur Soll"
-    command: "/usr/bin/ebusctl read ctlv3 Z1ActualRoomTempDesired | cut -d';' -f1"
-    unit_of_measurement: "°C"
 
-  
-  
-  - platform: command_line
-    name: "Tagtemperatur Soll"
-    command: "/usr/bin/ebusctl read ctlv3 Z1DayTemp | cut -d';' -f1"
-    unit_of_measurement: "°C"
+- platform: rest
+  name: "ctlv3_data"
+  unique_id: "ctlv3_data_all"
+  resource: "http://homeassistant:8889/data"
+  value_template: "OK"
+  json_attributes_path: "$.ctlv3.messages"
+  json_attributes:
+    - Z1RoomTemp
+    - Z1ActualRoomTempDesired
+    - Z1DayTemp
+    - Z1HolidayTemp
+    - Z1QuickVetoTemp
+    # hier kannst du beliebig viele hinzufügen
+  scan_interval: 30
 
-  - platform: command_line
-    name: "Absenktemperatur Soll"
-    command: "/usr/bin/ebusctl read ctlv3 Z1HolidayTemp | cut -d';' -f1"
-    unit_of_measurement: "°C"
 
-  - platform: command_line
-    name: "QuickVeto Temperatur"
-    command: "/usr/bin/ebusctl read ctlv3 Z1QuickVetoTemp | cut -d';' -f1"
-    unit_of_measurement: "°C"
+
+
 
 
   - platform: rest
     name: "CTL Z1 RoomTemp Raw"
+    unique_id: "ctl_z1_roomtemp_raw_001"
     resource: "http://homeassistant:8889/data"
     value_template: >
       {% set root = value_json.get('ctlv3', {}).get('messages', {}).get('Z1RoomTemp', {}) %}
@@ -98,4 +89,18 @@ template:
           {% else %}
             0
           {% endif %}
+
+
+      - name: "CTL Solltemperatur"
+        uid: "ctl_z1actualdesired"
+        unit: "°C"
+        device: "temperature"
+        feld: "Z1ActualRoomTempDesired"
+
+
+      - name: "CTL Tagtemperatur"
+        uid: "ctl_z1daytemp"
+        unit: "°C"
+        device: "temperature"
+        feld: "Z1DayTemp"
 
