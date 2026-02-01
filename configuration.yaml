@@ -1,4 +1,4 @@
-# Loads default set of integrations. Do not remove.
+# # Loads default set of integrations. Do not remove.
 default_config:
 
 # Load frontend themes from the themes folder
@@ -39,7 +39,6 @@ sensor:
       - Z1QuickVetoTemp
     scan_interval: 30
 
- 
   - platform: rest
     name: "CTL Z1 RoomTemp Raw"
     unique_id: "ctl_z1_roomtemp_raw_001"
@@ -85,4 +84,35 @@ template:
             0
           {% endif %}
 
+      # ⭐ CTLv3 Solltemperatur (korrekt)
+      - name: "CTL Solltemperatur"
+        unique_id: ctl_z1actualdesired
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+        state: >
+          {{ state_attr('sensor.ctlv3_data', 'Z1ActualRoomTempDesired') | float(0) }}
+
+      # ⭐ CTLv3 Tagtemperatur (korrekt)
+      - name: "CTL Tagtemperatur"
+        unique_id: ctl_z1daytemp
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+        state: >
+          {{ state_attr('sensor.ctlv3_data', 'Z1DayTemp') | float(0) }}
+
+      # ⭐ CTLv3 Tagtemperatur (korrekt)
+      - name: "CTL Holidaytemperatur"
+        unique_id: ctl_z1holidaytemp
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+        state: >
+          {% set obj = state_attr('sensor.ctlv3_data', 'Z1HolidayTemp') %}
+          {% if obj is mapping %}
+            {{ obj.fields.value.value | float }}
+          {% else %}
+            0
+          {% endif %}
           
