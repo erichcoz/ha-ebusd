@@ -24,39 +24,10 @@ mqtt:
       device_class: humidity
 
 sensor:
-  - platform: command_line
-    name: "Heizung Vorlauf Ist"
-    command: "/usr/bin/ebusctl read bai FlowTemp | cut -d';' -f1"
-    unit_of_measurement: "°C"
+  
+  
 
-  - platform: command_line
-    name: "Heizung Rücklauf Ist"
-    command: "/usr/bin/ebusctl read bai ReturnTemp | cut -d';' -f1"
-    unit_of_measurement: "°C"
-
-  - platform: command_line
-    name: "Heizung Vorlauf Soll"
-    command: "/usr/bin/ebusctl read bai FlowTempDesired | cut -d';' -f1"
-    unit_of_measurement: "°C"
-
-  - platform: command_line
-    name: "Warmwasser Soll"
-    command: "/usr/bin/ebusctl read bai HwcTempMax | cut -d';' -f1"
-    unit_of_measurement: "°C"
-
-  - platform: command_line
-    name: "Warmwasser Ist"
-    command: "/usr/bin/ebusctl read bai StorageTemp | cut -d';' -f1"
-    unit_of_measurement: "°C"
-
-  - platform: command_line
-    name: "Brennerstatus"
-    command: "/usr/bin/ebusctl read bai Flame | cut -d';' -f1"
-
-  - platform: command_line
-    name: "Heizmodus"
-    command: "/usr/bin/ebusctl read bai HcPumpMode | cut -d';' -f1"
-
+  
   - platform: command_line
     name: "Raumtemperatur Regler"
     command: "/usr/bin/ebusctl read ctlv3 Z1RoomTemp | cut -d';' -f1"
@@ -67,18 +38,8 @@ sensor:
     command: "/usr/bin/ebusctl read ctlv3 Z1ActualRoomTempDesired | cut -d';' -f1"
     unit_of_measurement: "°C"
 
-  - platform: command_line
-    name: "Heizung Pumpe"
-    command: "/usr/bin/ebusctl read bai StatusCirPump | cut -d';' -f1"
-
-  - platform: command_line
-    name: "Gasventil Starts"
-    command: "/usr/bin/ebusctl read bai ValveStarts | cut -d';' -f1"
-
-  - platform: command_line
-    name: "Gasventil Mode"
-    command: "/usr/bin/ebusctl read bai ValveMode | cut -d';' -f1"  
-
+  
+  
   - platform: command_line
     name: "Tagtemperatur Soll"
     command: "/usr/bin/ebusctl read ctlv3 Z1DayTemp | cut -d';' -f1"
