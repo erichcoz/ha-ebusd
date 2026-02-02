@@ -78,13 +78,15 @@ template:
         state_class: measurement
         state: >
           {% set v = states('sensor.ctl_z1_roomtemp_raw') %}
-          {% if v is not none and v | string | trim != '' and v | string | lower not in ['unknown', 'none', 'null', 'nan'] %}
-            {{ v | float }}
+          {% if v is not none
+                and v | string | trim != ''
+                and v | string | lower not in ['unknown', 'none', 'null', 'nan', 'unavailable'] %}
+            {{ v | float(0) }}
           {% else %}
             0
           {% endif %}
 
-      # ⭐ CTLv3 Solltemperatur (korrekt)
+
       - name: "CTL Solltemperatur"
         unique_id: ctl_z1actualdesired
         unit_of_measurement: "°C"
@@ -100,7 +102,16 @@ template:
         device_class: temperature
         state_class: measurement
         state: >
-          {{ state_attr('sensor.ctlv3_data', 'Z1DayTemp') | float(0) }}
+          {% set obj = state_attr('sensor.ctlv3_data', 'Z1DayTemp') %}
+          {% if obj is mapping
+                and obj.get('fields')
+                and obj.fields.get('value')
+                and obj.fields.value.get('value') %}
+          {{ obj.fields.value.value | float }}
+          {% else %}
+          0
+          {% endif %}
+
 
       # ⭐ CTLv3 Tagtemperatur (korrekt)
       - name: "CTL Holidaytemperatur"
@@ -110,9 +121,15 @@ template:
         state_class: measurement
         state: >
           {% set obj = state_attr('sensor.ctlv3_data', 'Z1HolidayTemp') %}
-          {% if obj is mapping %}
-            {{ obj.fields.value.value | float }}
+          {% if obj is mapping
+                and obj.get('fields')
+                and obj.fields.get('value')
+                and obj.fields.value.get('value') %}
+          {{ obj.fields.value.value | float }}
           {% else %}
-            0
+          0
           {% endif %}
+
+
+
           
