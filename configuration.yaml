@@ -35,6 +35,7 @@ sensor:
       - Z1RoomTemp
       - Z1ActualRoomTempDesired
       - Z1DayTemp
+      - Z1NightTemp
       - Z1HolidayTemp
       - Z1QuickVetoTemp
     scan_interval: 30
@@ -51,8 +52,60 @@ sensor:
       {% else %}
         0
       {% endif %}
-
     scan_interval: 30
+
+  
+
+  - platform: rest
+    name: "CTL Z1 ActualDesired Raw"
+    unique_id: "ctl_z1_actualdesired_raw_001"
+    resource: "http://homeassistant:8889/data"
+    value_template: >
+      {% set root = value_json.get('ctlv3', {}).get('messages', {}).get('Z1ActualRoomTempDesired', {}) %}
+      {% set v = root.get('fields', {}).get('value', {}).get('value') %}
+      {{ v if v is not none and v|string|trim != '' else 0 }}
+    scan_interval: 30
+
+  - platform: rest
+    name: "CTL Z1 DayTemp Raw"
+    unique_id: "ctl_z1_daytemp_raw_001"
+    resource: "http://homeassistant:8889/data"
+    value_template: >
+      {% set root = value_json.get('ctlv3', {}).get('messages', {}).get('Z1DayTemp', {}) %}
+      {% set v = root.get('fields', {}).get('value', {}).get('value') %}
+      {{ v if v is not none and v|string|trim != '' else 0 }}
+    scan_interval: 30
+
+  - platform: rest
+    name: "CTL Z1 NightTemp Raw"
+    unique_id: "ctl_z1_nighttemp_raw_001"
+    resource: "http://homeassistant:8889/data"
+    value_template: >
+      {% set root = value_json.get('ctlv3', {}).get('messages', {}).get('Z1NightTemp', {}) %}
+      {% set v = root.get('fields', {}).get('value', {}).get('value') %}
+      {{ v if v is not none and v|string|trim != '' else 0 }}
+    scan_interval: 30
+
+  - platform: rest
+    name: "CTL Z1 HolidayTemp Raw"
+    unique_id: "ctl_z1_holidaytemp_raw_001"
+    resource: "http://homeassistant:8889/data"
+    value_template: >
+      {% set root = value_json.get('ctlv3', {}).get('messages', {}).get('Z1HolidayTemp', {}) %}
+      {% set v = root.get('fields', {}).get('value', {}).get('value') %}
+      {{ v if v is not none and v|string|trim != '' else 0 }}
+    scan_interval: 30
+
+  - platform: rest
+    name: "CTL Z1 QuickVetoTemp Raw"
+    unique_id: "ctl_z1_quickvetotemp_raw_001"
+    resource: "http://homeassistant:8889/data"
+    value_template: >
+      {% set root = value_json.get('ctlv3', {}).get('messages', {}).get('Z1QuickVetoTemp', {}) %}
+      {% set v = root.get('fields', {}).get('value', {}).get('value') %}
+      {{ v if v is not none and v|string|trim != '' else 0 }}
+    scan_interval: 30
+
 
 
 
@@ -70,66 +123,45 @@ template:
         unit_of_measurement: "count"
         state: >
           {{ states('sensor.ebusd_bai_waterpressuremeasurecounter') | float(0) }}
-
+ 
       - name: "CTL Zone 1 Raumtemperatur"
         unique_id: ctl_zone_1_raumtemperatur
         unit_of_measurement: "°C"
         device_class: temperature
         state_class: measurement
-        state: >
-          {% set v = states('sensor.ctl_z1_roomtemp_raw') %}
-          {% if v is not none
-                and v | string | trim != ''
-                and v | string | lower not in ['unknown', 'none', 'null', 'nan', 'unavailable'] %}
-            {{ v | float(0) }}
-          {% else %}
-            0
-          {% endif %}
-
+        state: "{{ states('sensor.ctl_z1_roomtemp_raw') | float(0) }}"
 
       - name: "CTL Solltemperatur"
         unique_id: ctl_z1actualdesired
         unit_of_measurement: "°C"
         device_class: temperature
         state_class: measurement
-        state: >
-          {{ state_attr('sensor.ctlv3_data', 'Z1ActualRoomTempDesired') | float(0) }}
+        state: "{{ states('sensor.ctl_z1_actualdesired_raw') | float(0) }}"
 
-      # ⭐ CTLv3 Tagtemperatur (korrekt)
       - name: "CTL Tagtemperatur"
         unique_id: ctl_z1daytemp
         unit_of_measurement: "°C"
         device_class: temperature
         state_class: measurement
-        state: >
-          {% set obj = state_attr('sensor.ctlv3_data', 'Z1DayTemp') %}
-          {% if obj is mapping
-                and obj.get('fields')
-                and obj.fields.get('value')
-                and obj.fields.value.get('value') %}
-          {{ obj.fields.value.value | float }}
-          {% else %}
-          0
-          {% endif %}
+        state: "{{ states('sensor.ctl_z1_daytemp_raw') | float(0) }}"
 
+      - name: "CTL Nachttemperatur"
+        unique_id: ctl_z1nighttemp
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+        state: "{{ states('sensor.ctl_z1_nighttemp_raw') | float(0) }}"
 
-      # ⭐ CTLv3 Tagtemperatur (korrekt)
       - name: "CTL Holidaytemperatur"
         unique_id: ctl_z1holidaytemp
         unit_of_measurement: "°C"
         device_class: temperature
         state_class: measurement
-        state: >
-          {% set obj = state_attr('sensor.ctlv3_data', 'Z1HolidayTemp') %}
-          {% if obj is mapping
-                and obj.get('fields')
-                and obj.fields.get('value')
-                and obj.fields.value.get('value') %}
-          {{ obj.fields.value.value | float }}
-          {% else %}
-          0
-          {% endif %}
+        state: "{{ states('sensor.ctl_z1_holidaytemp_raw') | float(0) }}"
 
-
-
-          
+      - name: "CTL QuickVeto Temperatur"
+        unique_id: ctl_z1_quickvetotemp
+        unit_of_measurement: "°C"
+        device_class: temperature
+        state_class: measurement
+        state: "{{ states('sensor.ctl_z1_quickvetotemp_raw') | float(0) }}"
